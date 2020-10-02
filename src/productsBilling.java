@@ -1016,6 +1016,8 @@ public class productsBilling extends javax.swing.JFrame {
                 Logger.getLogger(productsBilling.class.getName()).log(Level.SEVERE, null, ex);
             }
             int k =0;
+            int l=0;
+            int current_qty;
             try {
                 k = pst.executeUpdate();
             } catch (SQLException ex) {
@@ -1024,7 +1026,29 @@ public class productsBilling extends javax.swing.JFrame {
             if(k==0){
                 JOptionPane.showMessageDialog(this, "Billing failed while adding "+ i+1+" item!");
             }
-
+            
+            PreparedStatement ps1;
+            ResultSet rs1;
+            try {
+                ps1 = con.prepareStatement("select pqty from products where id=?");
+                ps1.setString(1, pid);
+                rs1 = ps1.executeQuery();
+                if(rs1.next() == true){
+                    current_qty = Integer.parseInt(rs1.getString("pqty"));
+                    current_qty = current_qty - Integer.parseInt(pqty);
+                    ps1 = con.prepareStatement("update products set pqty=? where id=?");
+                    ps1.setString(1, Integer.toString(current_qty));
+                    ps1.setString(2, pid);
+                    l = ps1.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(productsBilling.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(l==0){
+                JOptionPane.showMessageDialog(this, "Failed while adding "+ i+1+" Quantity!");
+            }
+            
         }
         model.setRowCount(0);
                 txtpid.setText("**CHOOSE THE PRODUCT**");
@@ -1063,6 +1087,40 @@ public class productsBilling extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(productsBilling.class.getName()).log(Level.SEVERE, null, ex);
             }
+            int k =0;
+            int l=0;
+            int current_qty;
+            try {
+                k = pst.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(productsBilling.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if(k==0){
+                JOptionPane.showMessageDialog(this, "Billing failed while adding "+ i+1+" item!");
+            }
+            
+            PreparedStatement ps1;
+            ResultSet rs1;
+            try {
+                ps1 = con.prepareStatement("select pqty from products where id=?");
+                ps1.setString(1, pid);
+                rs1 = ps1.executeQuery();
+                if(rs1.next() == true){
+                    current_qty = Integer.parseInt(rs1.getString("pqty"));
+                    current_qty = current_qty - Integer.parseInt(pqty);
+                    ps1 = con.prepareStatement("update products set pqty=? where id=?");
+                    ps1.setString(1, Integer.toString(current_qty));
+                    ps1.setString(2, pid);
+                    l = ps1.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(productsBilling.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(l==0){
+                JOptionPane.showMessageDialog(this, "Failed while adding "+ i+1+" Quantity!");
+            }
+            
         }
         model.setRowCount(0);
                 txtpid.setText("**CHOOSE THE PRODUCT**");
@@ -1074,6 +1132,7 @@ public class productsBilling extends javax.swing.JFrame {
        net_amount = 0;
        pid.requestFocus();
        LoadProductNo();
+        
         }
     }//GEN-LAST:event_jButton8KeyPressed
 

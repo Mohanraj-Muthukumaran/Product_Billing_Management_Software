@@ -358,11 +358,12 @@ public class productsCrud extends javax.swing.JFrame {
         String id = pid.getSelectedItem().toString();
         String arr[] = id.split(" ");
         id = arr[0];
-        int pid = Integer.parseInt(id);
-        
+        String pid = id;
         try {
+           
             pst = con.prepareStatement("delete from products where id=?");
-            pst.setInt(1, pid);
+            pst.setString(1, pid);
+            JOptionPane.showMessageDialog(this, pst);
         } catch (SQLException ex) {
             Logger.getLogger(productsCrud.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -450,6 +451,28 @@ public class productsCrud extends javax.swing.JFrame {
         String pname = txtpname.getText();
         String price = txtpprice.getText();
         String qty = txtpqty.getText();
+            try {
+                pst = con.prepareStatement("select * from products");
+                rs = pst.executeQuery();
+                int l =0;
+                while(rs.next()){
+                    if(pname.equals(rs.getString("pname"))){
+                        pst = con.prepareStatement("update products set pqty=?,pprice=? where id=?");
+                        int current_qty = Integer.parseInt(rs.getString("pqty")) + Integer.parseInt(qty);
+                        pst.setString(1, Integer.toString(current_qty));
+                        pst.setString(2, price);
+                        pst.setString(3, rs.getString("id"));
+                        l = pst.executeUpdate();
+                        if(l!=0){
+                           JOptionPane.showMessageDialog(this, pname +" is updated successfully!");
+                        }
+                        return;
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(productsCrud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
         
         int pprice = Integer.parseInt(price);
         int pqty = Integer.parseInt(qty);
@@ -555,6 +578,28 @@ public class productsCrud extends javax.swing.JFrame {
         String pname = txtpname.getText();
         String price = txtpprice.getText();
         String qty = txtpqty.getText();
+            try {
+                pst = con.prepareStatement("select * from products");
+                rs = pst.executeQuery();
+                int l =0;
+                while(rs.next()){
+                    if(pname.equals(rs.getString("pname"))){
+                        pst = con.prepareStatement("update products set pqty=?,pprice=? where id=?");
+                        int current_qty = Integer.parseInt(rs.getString("pqty")) + Integer.parseInt(qty);
+                        pst.setString(1, Integer.toString(current_qty));
+                        pst.setString(2, price);
+                        pst.setString(3, rs.getString("id"));
+                        l = pst.executeUpdate();
+                        if(l!=0){
+                           JOptionPane.showMessageDialog(this, pname +" is updated successfully!");
+                        }
+                        return;
+                    }
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(productsCrud.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
         
         int pprice = Integer.parseInt(price);
         int pqty = Integer.parseInt(qty);
